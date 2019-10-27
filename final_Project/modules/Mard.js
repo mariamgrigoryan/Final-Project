@@ -1,11 +1,14 @@
-class Mard {
+var LiveForm = require("./LiveForm");
+var random = require("./random.js");
+
+
+module.exports = class Mard extends LiveForm {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+       super(x,y);
         this.aa = 5;
-        this.directions = [];
+        
     }
-    tarmacnel() {
+    getNewCoordinates() {
         this.directions = [
             [this.x - 1, this.y - 1],
             [this.x, this.y - 1],
@@ -18,20 +21,41 @@ class Mard {
         ];
     }
     chooseCell(character) {
-        this.tarmacnel()
-        var found = [];
-        for (var i in this.directions) {
-            var x = this.directions[i][0];
-            var y = this.directions[i][1];
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-                if (matrix[y][x] == character) {
-                    found.push(this.directions[i]);
+        this.getNewCoordinates();
+        return super.chooseCell(character);
+
+       
+    }
+    eat() {
+        let emptyCells = this.chooseCell(5);
+        let newCell = random(emptyCells);
+
+        if (newCell) {
+            this.life++;
+
+            let x = newCell[0];
+            let y = newCell[1];
+
+            matrix[y][x] = 3;
+            matrix[this.y][this.x] = 0;
+
+
+            for (let i in grassArr) {
+                if (grassArr[i].x == x && grassArr[i].y == y) {
+                    grassArr.splice(i, 1)
                 }
             }
-        }
-        return found;
-    }
 
+            this.y = y;
+            this.x = x;
+
+            if (this.life >= 30) {
+                this.mul();
+            }
+        } else {
+            this.move()
+        }
+    }
     move() {
         this.min--;
         let emptyCells = this.chooseCell(0);
@@ -42,10 +66,16 @@ class Mard {
         if (newCell) {
             let x = newCell[0];
             let y = newCell[1];
-
-            // matrixi mej gru mem MEK -> 1
-            matrix[y][x] = 5;
+            
+            
+            matrix[y][x] = 3 ;
             matrix[this.y][this.x] = 0;
+
+            for (let i in grassArr) {
+                if (grassArr[i].x == x && grassArr[i].y == y) {
+                    grassArr.splice(i, 1)
+                }
+            }
 
             this.y = y;
             this.x = x;

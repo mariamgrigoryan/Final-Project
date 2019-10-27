@@ -1,11 +1,10 @@
-
 var LiveForm = require("./LiveForm");
 var random = require ("./random.js");
 
 
 
 
- module.exports = class GrassEater  extends LiveForm {
+ module.exports = class Hresh  extends LiveForm {
     constructor(x, y) {
         super(x,y);
         this.life = 30;
@@ -28,26 +27,26 @@ var random = require ("./random.js");
        return super.chooseCell(character);
     }
     mul() {
+
         let emptyCells = this.chooseCell(0);
         let newCell = random(emptyCells);
 
         if (newCell) {
-            grassEaterHashiv++;
+
             let x = newCell[0];
             let y = newCell[1];
 
-            
-            matrix[y][x] = 2;
+            matrix[y][x] = 6;
 
-           
-            let grassEater = new GrassEater(x, y);
-            grassEaterArr.push(grassEater);
+            let hresh = new Hresh(x, y);
+            hreshArr.push(hresh);
 
             this.life = 30;
+            hreshHashiv++;
         }
     }
     eat() {
-        let emptyCells = this.chooseCell(1);
+        let emptyCells = this.chooseCell(3);
         let newCell = random(emptyCells);
 
         if (newCell) {
@@ -56,14 +55,14 @@ var random = require ("./random.js");
             let x = newCell[0];
             let y = newCell[1];
 
-            
-            matrix[y][x] = 2;
+            // matrixi mej gru mem MEK -> 1
+            matrix[y][x] = 6;
             matrix[this.y][this.x] = 0;
 
 
-            for (let i in grassArr) {
-                if (grassArr[i].x == x && grassArr[i].y == y) {
-                    grassArr.splice(i, 1)
+            for (let i in mardArr) {
+                if (mardArr[i].x == x && mardArr[i].y == y) {
+                    mardArr.splice(i, 1)
                 }
             }
 
@@ -80,31 +79,24 @@ var random = require ("./random.js");
     move() {
         this.life--;
         let emptyCells = this.chooseCell(0);
-        let emptyCellss = this.chooseCell(4);
+        let emptyCellss = this.chooseCell(1);
         let newCell = random(emptyCells.concat(emptyCellss));
 
         if (newCell) {
             let x = newCell[0];
             let y = newCell[1];
-
-          
-            matrix[y][x] = 2;
+           
+            matrix[y][x] = 6;
             matrix[this.y][this.x] = 0;
+
+            for (let i in grassArr) {
+                if (grassArr[i].x == x && grassArr[i].y == y) {
+                    grassArr.splice(i, 1)
+                }
+            }
 
             this.y = y;
             this.x = x;
-        }
-        if (this.life < 0) {
-            this.die();
-        }
-    }
-    die() {
-        matrix[this.y][this.x] = 0;
-
-        for (let i in grassEaterArr) {
-            if (grassEaterArr[i].x == this.x && grassEaterArr[i].y == this.y) {
-                grassEaterArr.splice(i, 1)
-            }
         }
     }
 }

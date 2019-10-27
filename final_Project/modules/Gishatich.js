@@ -1,11 +1,13 @@
-class Gishatich {
+var LiveForm = require("./LiveForm");
+var random = require("./random.js");
+
+module.exports = class Gishatich extends LiveForm {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+      super(x,y);
         this.min = 100;
-        this.directions = [];
+       
     }
-    tarmacnel() {
+    getNewCoordinates() {
         this.directions = [
             [this.x - 1, this.y - 1],
             [this.x, this.y - 1],
@@ -18,36 +20,29 @@ class Gishatich {
         ];
     }
     chooseCell(character) {
-        this.tarmacnel()
-        var found = [];
-        for (var i in this.directions) {
-            var x = this.directions[i][0];
-            var y = this.directions[i][1];
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-                if (matrix[y][x] == character) {
-                    found.push(this.directions[i]);
-                }
-            }
-        }
-        return found;
+        this.getNewCoordinates();
+        return super.chooseCell(character);
+        
+       
     }
     mul() {
         let emptyCells = this.chooseCell(0);
         let newCell = random(emptyCells);
 
         if (newCell) {
-
+            gishatichHashiv++;
             let x = newCell[0];
             let y = newCell[1];
 
-            // matrixi mej gru mem MEK -> 1
-            matrix[y][x] = 3;
+            // matrixi mej grum em MEK -> 1
+            matrix[y][x] = 5;
 
             // sarqum em OBJ lscnum grassArr-i mej 
             let gishatich = new Gishatich(x, y);
             gishatichArr.push(gishatich);
 
             this.min = 100;
+            
         }
     }
     eat() {
@@ -60,8 +55,8 @@ class Gishatich {
             let x = newCell[0];
             let y = newCell[1];
 
-            // matrixi mej gru mem MEK -> 1
-            matrix[y][x] = 3;
+            // matrixi mej grum em MEK -> 1
+            matrix[y][x] = 5;
             matrix[this.y][this.x] = 0;
 
 
@@ -92,10 +87,16 @@ class Gishatich {
         if (newCell) {
             let x = newCell[0];
             let y = newCell[1];
-
+            
             // matrixi mej gru mem MEK -> 1
-            matrix[y][x] = 3;
+            matrix[y][x] = 5;
             matrix[this.y][this.x] = 0;
+
+            for (let i in grassArr) {
+                if (grassArr[i].x == x && grassArr[i].y == y) {
+                    grassArr.splice(i, 1)
+                }
+            }
 
             this.y = y;
             this.x = x;
